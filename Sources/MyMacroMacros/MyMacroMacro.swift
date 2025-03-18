@@ -25,13 +25,13 @@ public struct StringifyMacro: ExpressionMacro {
     }
 }
 
-public struct ManagedTask: ExpressionMacro {
+public struct ManagedTaskMacro: ExpressionMacro {
   public static func expansion(of node: some SwiftSyntax.FreestandingMacroExpansionSyntax, in context: some SwiftSyntaxMacros.MacroExpansionContext) throws -> SwiftSyntax.ExprSyntax {
     return "Task { /* body */ }"
   }
 }
 
-public struct ManagedTaskBody: BodyMacro {
+public struct ManagedTaskBodyMacro: BodyMacro {
   public static func expansion(
     of node: AttributeSyntax,
     providingBodyFor declaration: some DeclSyntaxProtocol & WithOptionalCodeBlockSyntax,
@@ -41,17 +41,15 @@ public struct ManagedTaskBody: BodyMacro {
   }
 }
 
-public struct ManagingTask: MemberAttributeMacro {
+public struct ManagingTaskMacro: MemberAttributeMacro {
   public static func expansion(of node: SwiftSyntax.AttributeSyntax, attachedTo declaration: some SwiftSyntax.DeclGroupSyntax, providingAttributesFor member: some SwiftSyntax.DeclSyntaxProtocol, in context: some SwiftSyntaxMacros.MacroExpansionContext) throws -> [SwiftSyntax.AttributeSyntax] {
     return []
   }
-  
-
 }
 
 @main
 struct MyMacroPlugin: CompilerPlugin {
     let providingMacros: [Macro.Type] = [
-      StringifyMacro.self, ManagedTask.self, ManagedTaskBody.self, ManagingTask.self
+      StringifyMacro.self, ManagedTaskMacro.self, ManagedTaskBodyMacro.self, ManagingTaskMacro.self
     ]
 }
