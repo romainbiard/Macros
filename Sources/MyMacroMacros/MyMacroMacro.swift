@@ -29,8 +29,6 @@ public struct ManagedTask: ExpressionMacro {
   public static func expansion(of node: some SwiftSyntax.FreestandingMacroExpansionSyntax, in context: some SwiftSyntaxMacros.MacroExpansionContext) throws -> SwiftSyntax.ExprSyntax {
     return "Task { /* body */ }"
   }
-
-
 }
 
 public struct ManagedTaskBody: BodyMacro {
