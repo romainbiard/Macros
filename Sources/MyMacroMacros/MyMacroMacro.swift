@@ -13,7 +13,7 @@ public struct AutoCancellableTaskMacro: ExpressionMacro {
     return """
            let task = Task { \(body)
            }
-           taskHolder.add(task, forKey: "\\(#function)\\(#line))"
+           taskHolder.add(task, forKey: "\\(#function)\\(#line)")
           """
   }
 }
