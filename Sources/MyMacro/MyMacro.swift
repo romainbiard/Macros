@@ -7,11 +7,9 @@
 ///     #stringify(x + y)
 ///
 /// produces a tuple `(x + y, "x + y")`.
-@freestanding(expression)
-public macro stringify<T>(_ value: T) -> (T, String) = #externalMacro(module: "MyMacroMacros", type: "StringifyMacro")
 
-@attached(memberAttribute)
+@attached(member)
 public macro ManagingTask() = #externalMacro(module: "MyMacroMacros", type: "ManagingTaskMacro")
 
 @freestanding(expression)
-public macro ManagedTask(_ body: @escaping () async throws -> Void) -> Task<Void, Error> = #externalMacro(module: "MyMacroMacros", type: "ManagedTaskMacro")
+public macro AutoCancellableTask(_ body: @escaping () async throws -> Void) = #externalMacro(module: "MyMacroMacros", type: "AutoCancellableTaskMacro")

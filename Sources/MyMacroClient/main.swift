@@ -1,8 +1,10 @@
 import MyMacro
 
-let a = 17
-let b = 25
+#AutoCancellableTask {
+  print("Test tutu1234")
+}
 
-let (result, code) = #stringify(a + b)
+@ManagingTask
+struct TestE {
 
-print("The value \(result) was produced by the code \"\(code)\"")
+}
