@@ -14,7 +14,7 @@ public struct AutoCancellableTaskMacro: ExpressionMacro {
           {
            let taskIdentifier = "\\(#function)\\(#line)"
            _tasks.cancel(taskIdentifier)
-           let task = Task { \(node.trailingClosure?.signature) \(body)
+           let task = Task(\(node.arguments)) { \(node.trailingClosure?.signature) \(body)
            }
            _tasks.add(task, for: "\\(taskIdentifier)")
           }()
