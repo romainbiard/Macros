@@ -5,7 +5,6 @@ import SwiftSyntaxBuilder
 import SwiftSyntaxMacros
 
 public struct AutoCancellableTaskMacro: ExpressionMacro {
-
   public static func expansion(of node: some FreestandingMacroExpansionSyntax, in context: some MacroExpansionContext) throws -> ExprSyntax {
     guard let body = node.trailingClosure?.statements else {
       fatalError("compiler bug: the macro does not have any arguments")
@@ -34,9 +33,17 @@ public struct ManagingTaskMacro: MemberMacro {
   }
 }
 
+public struct CancelAllTasksMacro: ExpressionMacro {
+  public static func expansion(of node: some FreestandingMacroExpansionSyntax, in context: some MacroExpansionContext) throws -> ExprSyntax {
+    return """
+          _tasks.cancelAllTasks()
+          """
+  }
+}
+
 @main
 struct MyMacroPlugin: CompilerPlugin {
     let providingMacros: [Macro.Type] = [
-      AutoCancellableTaskMacro.self, ManagingTaskMacro.self
+      AutoCancellableTaskMacro.self, ManagingTaskMacro.self, CancelAllTasksMacro.self
     ]
 }

@@ -14,6 +14,9 @@ public macro ManagingTask() = #externalMacro(module: "MyMacroMacros", type: "Man
 @freestanding(expression)
 public macro AutoCancellableTask(priority: TaskPriority? = nil, _ body: @escaping () async throws -> Void) = #externalMacro(module: "MyMacroMacros", type: "AutoCancellableTaskMacro")
 
+@freestanding(expression)
+public macro CancelAllTasks() = #externalMacro(module: "MyMacroMacros", type: "CancelAllTasksMacro")
+
 public struct TaskHolder {
   var tasks: [String: Task<Void, Never>] = [:]
 
