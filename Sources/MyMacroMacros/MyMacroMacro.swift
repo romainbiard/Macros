@@ -12,10 +12,10 @@ public struct AutoCancellableTaskMacro: ExpressionMacro {
     }
     return """
            let taskIdentifier = "\\(#function)\\(#line)"
-           tasks.cancel(taskIdentifier)
+           _tasks.cancel(taskIdentifier)
            let task = Task { \(node.trailingClosure?.signature) \(body)
            }
-           tasks.add(task, forKey: "\\(taskIdentifier)")
+           _tasks.add(task, forKey: "\\(taskIdentifier)")
           """
   }
 }
@@ -26,7 +26,7 @@ public struct ManagingTaskMacro: MemberMacro {
     providingMembersOf declaration: some DeclGroupSyntax,
     in context: some MacroExpansionContext) throws -> [DeclSyntax] {
     let taskHolderProperty: DeclSyntax = """
-        private var tasks = TaskHolder()
+        private var _tasks = TaskHolder()
         """
     return [taskHolderProperty]
   }

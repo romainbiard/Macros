@@ -8,7 +8,7 @@
 ///
 /// produces a tuple `(x + y, "x + y")`.
 
-@attached(member)
+@attached(member, names: named(_tasks))
 public macro ManagingTask() = #externalMacro(module: "MyMacroMacros", type: "ManagingTaskMacro")
 
 @freestanding(expression)
