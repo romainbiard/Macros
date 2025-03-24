@@ -10,7 +10,7 @@ public struct AutoCancellableTaskMacro: ExpressionMacro {
       fatalError("compiler bug: the macro does not have any arguments")
     }
     return """
-          {
+          { @MainActor in
            let taskIdentifier = "\\(#function)\\(#line)"
            _tasks.cancel(taskIdentifier)
            let task = Task(\(node.arguments)) { \(node.trailingClosure?.signature) \(body)
