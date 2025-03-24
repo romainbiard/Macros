@@ -23,6 +23,10 @@ public struct TaskHolder {
     tasks[key] = task
   }
 
+  public mutating func cancel(_ key: String) {
+    tasks.removeValue(forKey: key)?.cancel()
+  }
+
   public mutating func cancelAllTasks() {
     for (_, task) in tasks {
       task.cancel()
