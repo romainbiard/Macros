@@ -23,7 +23,7 @@ public struct TaskHolder {
   public init() { }
 
   public mutating func add(_ task: Task<Void, Never>, for key: String) {
-    tasks[key] = task
+    tasks.updateValue(task, forKey: key)
   }
 
   public mutating func cancel(_ key: String) {
