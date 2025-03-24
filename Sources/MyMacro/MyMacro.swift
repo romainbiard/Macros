@@ -15,11 +15,11 @@ public macro ManagingTask() = #externalMacro(module: "MyMacroMacros", type: "Man
 public macro AutoCancellableTask(_ body: @escaping () async throws -> Void) = #externalMacro(module: "MyMacroMacros", type: "AutoCancellableTaskMacro")
 
 public struct TaskHolder {
-  var tasks: [String: Task<Void, Error>] = [:]
+  var tasks: [String: Task<Void, Never>] = [:]
 
   public init() { }
 
-  public mutating func addTask(_ task: Task<Void, Error>, for key: String) {
+  public mutating func add(_ task: Task<Void, Never>, for key: String) {
     tasks[key] = task
   }
 
