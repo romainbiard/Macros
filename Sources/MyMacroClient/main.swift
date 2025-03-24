@@ -1,6 +1,8 @@
 import MyMacro
 
-#AutoCancellableTask {
+let toto = ""
+
+#AutoCancellableTask { [toto] in
   print("Test tutu1234")
 }
 
