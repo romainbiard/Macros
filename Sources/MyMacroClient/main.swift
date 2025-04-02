@@ -10,5 +10,3 @@ let toto = ""
 struct TestE {
 
 }
-
-#CancelAllTasks

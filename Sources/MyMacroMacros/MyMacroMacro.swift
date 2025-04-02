@@ -12,10 +12,9 @@ public struct AutoCancellableTaskMacro: ExpressionMacro {
     return """
           { @MainActor in
            let taskIdentifier = "\\(#function)\\(#line)"
-           _tasks.cancel(taskIdentifier)
-           let task = Task(\(node.arguments)) { \(node.trailingClosure?.signature) \(body)
+           _tasks[taskIdentifier]?.cancel()
+           _tasks[taskIdentifier] = Task(\(node.arguments)) { \(node.trailingClosure?.signature) \(body)
            }
-           _tasks.add(task, for: "\\(taskIdentifier)")
           }()
           """
   }
@@ -27,23 +26,22 @@ public struct ManagingTaskMacro: MemberMacro {
     providingMembersOf declaration: some DeclGroupSyntax,
     in context: some MacroExpansionContext) throws -> [DeclSyntax] {
     let taskHolderProperty: DeclSyntax = """
-        private var _tasks = TaskHolder()
+        private var _tasks = [String: Task<Void, Never>]()
+        
+        private func cancelAllTasks() {
+            for (_, task) in _task {
+              task.cancel()
+            }
+            tasks.removeAll()
+        }
         """
     return [taskHolderProperty]
-  }
-}
-
-public struct CancelAllTasksMacro: ExpressionMacro {
-  public static func expansion(of node: some FreestandingMacroExpansionSyntax, in context: some MacroExpansionContext) throws -> ExprSyntax {
-    return """
-          _tasks.cancelAllTasks()
-          """
   }
 }
 
 @main
 struct MyMacroPlugin: CompilerPlugin {
     let providingMacros: [Macro.Type] = [
-      AutoCancellableTaskMacro.self, ManagingTaskMacro.self, CancelAllTasksMacro.self
+      AutoCancellableTaskMacro.self, ManagingTaskMacro.self
     ]
 }
