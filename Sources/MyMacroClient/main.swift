@@ -2,7 +2,7 @@ import MyMacro
 
 let toto = ""
 
-#AutoCancellableTask { [toto] in
+#AutoCancellableTask { 
   print("Test tutu1234")
 }
 

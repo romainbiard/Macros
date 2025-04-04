@@ -8,8 +8,8 @@
 ///
 /// produces a tuple `(x + y, "x + y")`.
 
-@attached(member, names: named(_tasks), named(cancelAllTasks))
+@attached(member, names: named(_tasks), named(cancelAllTasks), named(_key))
 public macro ManagingTask() = #externalMacro(module: "MyMacroMacros", type: "ManagingTaskMacro")
 
 @freestanding(expression)
-public macro AutoCancellableTask(priority: TaskPriority? = nil, _ body: @escaping () async throws -> Void) = #externalMacro(module: "MyMacroMacros", type: "AutoCancellableTaskMacro")
+public macro AutoCancellableTask(key: String = "\(#function)\(#line)", priority: TaskPriority? = nil, _ body: @escaping @Sendable () async throws -> Void) = #externalMacro(module: "MyMacroMacros", type: "AutoCancellableTaskMacro")

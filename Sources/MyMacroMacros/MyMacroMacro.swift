@@ -9,9 +9,12 @@ public struct AutoCancellableTaskMacro: ExpressionMacro {
     guard let body = node.trailingClosure?.statements else {
       fatalError("compiler bug: the macro does not have any arguments")
     }
+
     return """
-          { @MainActor in
-           let taskIdentifier = "\\(#function)\\(#line)"
+          { 
+           guard !Task.isCancelled else { return }
+           let taskIdentifier = _key()
+           print(taskIdentifier)
            _tasks[taskIdentifier]?.cancel()
            _tasks[taskIdentifier] = Task(\(node.arguments)) { \(node.trailingClosure?.signature) \(body)
            }
@@ -29,10 +32,12 @@ public struct ManagingTaskMacro: MemberMacro {
         private var _tasks = [String: Task<Void, Never>]()
         
         private func cancelAllTasks() {
-            for (_, task) in _task {
-              task.cancel()
-            }
-            tasks.removeAll()
+            _tasks.values.forEach { $0.cancel() }
+           // _tasks.removeAll()
+        }
+        
+        private func _key(key: String = "\\(#function)\\(#line)") -> String {
+            return key
         }
         """
     return [taskHolderProperty]
